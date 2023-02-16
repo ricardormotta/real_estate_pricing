@@ -26,20 +26,16 @@ You will be able to:
 * **Create users** (_not implemented_). * **Read users** (_not implemented_).
 
     """,
-    openapi_tags=[]
+    openapi_tags=[],
 )
 
-@app.get('/')
+
+@app.get("/")
 async def docs_redirect():
-    return RedirectResponse(url='/docs')
+    return RedirectResponse(url="/docs")
 
 
 MLPredictor = context.catalog.load("MLPredictor")
-
-
-
-
-
 
 
 class MLPredictorshp_bairro_distrito(str, Enum):
@@ -138,64 +134,67 @@ class MLPredictorshp_bairro_distrito(str, Enum):
     Iguatemi = "Iguatemi"
     Itaim_Paulista = "Itaim_Paulista"
     José_Bonifacio = "José_Bonifacio"
-    
+
 
 class MLPredictortipo_imovel(str, Enum):
     APARTAMENTO = "APARTAMENTO"
     CASA = "CASA"
-    
 
-@app.get("/sales_and_rental_prediction", tags=['users'])
+
+@app.get("/sales_and_rental_prediction", tags=["users"])
 def predict_sales_and_rental_prediction(
-area_util:float, 
-    dormitorios:int, 
-    suites:int, 
-    banheiros:int, 
-    vagas:int, 
-    salas:int, 
-    
-    shp_bairro_distrito:MLPredictorshp_bairro_distrito, 
-    
-    tipo_imovel:MLPredictortipo_imovel, 
-    ano_construcao:int
-    ):
-    args={
-    "area_util": area_util,
-    "dormitorios": dormitorios,
-    "suites": suites,
-    "banheiros": banheiros,
-    "vagas": vagas,
-    "salas": salas,
-    "shp_bairro_distrito": shp_bairro_distrito,
-    "tipo_imovel": tipo_imovel,
-    "ano_construcao": ano_construcao,
+    area_util: float,
+    dormitorios: int,
+    suites: int,
+    banheiros: int,
+    vagas: int,
+    salas: int,
+    shp_bairro_distrito: MLPredictorshp_bairro_distrito,
+    tipo_imovel: MLPredictortipo_imovel,
+    ano_construcao: int,
+):
+    args = {
+        "area_util": area_util,
+        "dormitorios": dormitorios,
+        "suites": suites,
+        "banheiros": banheiros,
+        "vagas": vagas,
+        "salas": salas,
+        "shp_bairro_distrito": shp_bairro_distrito,
+        "tipo_imovel": tipo_imovel,
+        "ano_construcao": ano_construcao,
     }
     df = pd.DataFrame({k: [v] for k, v in args.items()})
     result = MLPredictor.predict(df, context)
-    
-    if result.get('error'):
+
+    if result.get("error"):
         raise HTTPException(
-            status_code=int(result.get('error').get('status_code')), 
-            detail=result.get('error').get('detail')
+            status_code=int(result.get("error").get("status_code")),
+            detail=result.get("error").get("detail"),
         )
 
     return result
+
+
 def _get_values_as_tuple(values: Iterable[str]) -> Tuple[str, ...]:
     return tuple(chain.from_iterable(value.split(",") for value in values))
 
 
 @app.post("/kedro")
 def kedro(
-    request: dict = Body(..., example={
-        "pipeline_name": "",
-        "tag": [],
-        "node_names": [],
-        "from_nodes": [],
-        "to_nodes": [],
-        "from_inputs": [],
-        "to_outputs": [],
-        "params": {}
-    })
+    request: dict = Body(
+        ...,
+        example={
+            "pipeline_name": "",
+            "tag": [],
+            "node_names": [],
+            "from_nodes": [],
+            "to_nodes": [],
+            "from_inputs": [],
+            "to_outputs": [],
+            "params": {},
+        },
+    )
 ):
     pipeline_name = request.get("pipeline_name")
     tag = request.get("tag")
@@ -210,24 +209,24 @@ def kedro(
     node_names = _get_values_as_tuple(node_names) if node_names else node_names
     package_name = str(Path(__file__).resolve().parent.name)
     try:
-        with KedroSession.create(package_name, env=None, extra_params=params) as session:
+        with KedroSession.create(
+            package_name, env=None, extra_params=params
+        ) as session:
             return session.run(
-                    tags=tag,
-                    node_names=node_names,
-                    from_nodes=from_nodes,
-                    to_nodes=to_nodes,
-                    from_inputs=from_inputs,
-                    to_outputs=to_outputs,
-                    pipeline_name=pipeline_name,
-                )
+                tags=tag,
+                node_names=node_names,
+                from_nodes=from_nodes,
+                to_nodes=to_nodes,
+                from_inputs=from_inputs,
+                to_outputs=to_outputs,
+                pipeline_name=pipeline_name,
+            )
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
 
 
 @app.get("/catalog")
-def catalog(
-    name: str
-):
+def catalog(name: str):
     try:
         file = context.catalog.load(name)
         return file.to_json(force_ascii=False)

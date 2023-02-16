@@ -15,7 +15,7 @@ def data_cleaning(
     rental_transaction_type,
     sales_transaction_type,
 ):
-    df = df.loc[df["Mes"]>=9]
+    df = df.loc[df["Mes"] >= 9]
     df = df.loc[df["shp_municipio"].isin(accepted_cities)]
     cols_to_keep = [*categorical_features, *numerical_features, target]
     df = df.dropna(subset=cols_to_keep)

@@ -27,13 +27,10 @@ def split_train_test(
     for col in numerical_features:
         q1 = X_train[col].quantile(0.25)
         q3 = X_train[col].quantile(0.75)
-        iqr = q3-q1 #Interquartile range
-        fence_low  = q1-1.5*iqr
-        fence_high = q3+1.5*iqr
-        X_train = X_train.loc[
-            (X_train[col] > fence_low)
-            & (X_train[col] < fence_high)
-        ]
+        iqr = q3 - q1  # Interquartile range
+        fence_low = q1 - 1.5 * iqr
+        fence_high = q3 + 1.5 * iqr
+        X_train = X_train.loc[(X_train[col] > fence_low) & (X_train[col] < fence_high)]
     y_train = y_train.iloc[X_train.index]
 
     return (X_train, X_test, y_train, y_test)
