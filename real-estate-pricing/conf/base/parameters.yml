@@ -1,0 +1,36 @@
+sales_transaction_type: VENDA
+
+rental_transaction_type: LOCACAO
+
+accepted_cities: 
+  - São Paulo
+
+categorical_features: 
+  - shp_bairro_distrito
+  - tipo_imovel
+
+numerical_features:
+  - area_util
+  - dormitorios
+  - suites
+  - banheiros
+  - vagas
+  - salas
+  - ano_construcao
+
+bigger_than_zero_cols:
+  - area_util
+  - dormitorios
+  - ano_construcao
+
+target: preco_imovel_mediana
+
+perc_test: 0.2
+
+SEED: 42
+
+params_grid:
+  n_estimators: [5000, 10000, 20000, 30000]
+  max_depth: [6, 10, 14, 18]
+  reg_alpha: [0.1, 1, 100]
+  # early_stopping_rounds: [200]

@@ -1,0 +1,154 @@
+# API information
+title: FastAPI
+description: >
+  ChimichangApp API helps you do awesome stuff. 🚀
+
+  ## Items
+
+  You can **read items**.
+
+  ## Users
+
+  You will be able to:
+
+  * **Create users** (_not implemented_).
+  * **Read users** (_not implemented_).
+version: 0.1.0
+
+# Declare all tags
+# tags:
+#   users:
+#     description: "Operations with users. The **login** logic is also here."
+#   items:
+#     description: "Manage items. So _fancy_ they have their own docs."
+
+routes:
+  # A_route is the “name” you use to access endpoints, used in the URL:
+  # www.some_api.com/my_model/
+  sales_and_rental_prediction:
+    # Catalog reference to .pickle model
+    predictor: MLPredictor
+    # allowed types int, float, str, bool and enum
+    # parameters are used to create a_single row pandas df
+    # make sure to declare in the same order as your model needs.
+
+    # Declare route tags
+    tags: ['users']
+    parameters:
+      area_util:
+        type: float
+      dormitorios:
+        type: int
+      suites:
+        type: int
+      banheiros:
+        type: int
+      vagas:
+        type: int
+      salas:
+        type: int
+      shp_bairro_distrito:
+        type: enum
+        options:
+          - Itaim_Bibi
+          - Pinheiros
+          - Jd_Paulista
+          - Lapa
+          - Perdizes
+          - Santa_Cecília
+          - Ipiranga
+          - Morumbi
+          - Vl_Leopoldina
+          - Vl_Mariana
+          - Barra_Funda
+          - Bela_Vista
+          - Moema
+          - Cursino
+          - Brás
+          - Rio_Pequeno
+          - Santo_Amaro
+          - Penha
+          - Consolação
+          - Jabaquara
+          - Liberdade
+          - Mandaqui
+          - Vl_Formosa
+          - Vl_Andrade
+          - Campo_Belo
+          - Vl_Matilde
+          - Sacomã
+          - Limão
+          - Aricanduva
+          - Vl_Sonia
+          - Cambuci
+          - Vl_Maria
+          - Alto_de_Pinheiros
+          - Saúde
+          - Jaguaré
+          - Tatuapé
+          - Cangaíba
+          - Carrão
+          - Tremembé
+          - Cidade_Ademar
+          - Santana
+          - Cidade_Tiradentes
+          - Mooca
+          - Vl_Medeiros
+          - Freguesia_do_Ó
+          - República
+          - Vl_Guilherme
+          - Casa_Verde
+          - Pedreira
+          - Belém
+          - Butantã
+          - Jd_São_Luis
+          - Vl_Prudente
+          - Campo_Grande
+          - Cidade_Dutra
+          - Tucuruvi
+          - Água_Rasa
+          - Socorro
+          - Jáguara
+          - Cachoeirinha
+          - Itaquera
+          - Cidade_Líder
+          - Artur_Alvim
+          - Raposo_Tavares
+          - Pirituba
+          - Ermelino_Matarazzo
+          - São_Lucas
+          - Grajaú
+          - Jaçana
+          - Campo_Limpo
+          - Parelheiros
+          - Bom_Retiro
+          - Ponte_Rasa
+          - Guaianases
+          - Sapopemba
+          - São_Domingos
+          - Parque_do_Carmo
+          - Sé
+          - São_Miguel
+          - Jd_Ângela
+          - Vl_Jacui
+          - Jaraguá
+          - São_Mateus
+          - Capão_Redondo
+          - Brasilândia
+          - Vl_Curuca
+          - Pari
+          - São_Rafael
+          - Anhanguera
+          - Jd_Helena
+          - Perus
+          - Lajeado
+          - Iguatemi
+          - Itaim_Paulista
+          - José_Bonifacio
+      tipo_imovel:
+        type: enum
+        options:
+          - APARTAMENTO
+          - CASA
+      ano_construcao:
+        type: int
