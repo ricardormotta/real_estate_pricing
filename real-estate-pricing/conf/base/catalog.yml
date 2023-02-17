@@ -11,13 +11,7 @@ raw_data:
 
 df_sales:
   type: pandas.CSVDataSet
-  filepath: data/02_intermediate/X_train_sales.csv
-  save_args:
-    sep: ','
-
-df_rental:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/X_train_sales.csv
+  filepath: data/02_intermediate/df_sales.csv
   save_args:
     sep: ','
 
@@ -45,6 +39,24 @@ y_test_sales:
   save_args:
     sep: ','
 
+
+sales_pipeline:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/sales_pipeline.pkl
+  backend: pickle
+
+fitted_sales_pipeline:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet  
+  data_set:
+    type: pickle.PickleDataSet
+    filepath: data/06_models/fitted_sales_pipeline.pkl
+
+df_rental:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/df_rental.csv
+  save_args:
+    sep: ','
+
 X_train_rental:
   type: pandas.CSVDataSet
   filepath: data/03_primary/X_train_rental.csv
@@ -69,12 +81,6 @@ y_test_rental:
   save_args:
     sep: ','
 
-sales_pipeline:
-  type: pickle.PickleDataSet
-  filepath: data/06_models/sales_pipeline.pkl
-  backend: pickle
-
-
 rental_pipeline:
   type: pickle.PickleDataSet
   filepath: data/06_models/rental_pipeline.pkl
@@ -86,21 +92,7 @@ fitted_rental_pipeline:
     type: pickle.PickleDataSet
     filepath: data/06_models/fitted_rental_pipeline.pkl
 
-fitted_sales_pipeline:
-  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet  
-  data_set:
-    type: pickle.PickleDataSet
-    filepath: data/06_models/fitted_sales_pipeline.pkl
-
-# fitted_rental_pipeline:
-#   type: pickle.PickleDataSet
-#   filepath: data/06_models/fitted_rental_pipeline.pkl
-
-# fitted_sales_pipeline:
-#   type: pickle.PickleDataSet
-#   filepath: data/06_models/fitted_sales_pipeline.pkl
-
-metrics_rental:
+metrics_rent:
   type: kedro_mlflow.io.metrics.MlflowMetricsDataSet
 
 metrics_sales:
