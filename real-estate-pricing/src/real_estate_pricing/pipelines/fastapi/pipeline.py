@@ -13,8 +13,8 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func=save_predictor,
                 inputs=[
-                    "fitted_rental_pipe",
-                    "fitted_sales_pipe",
+                    "fitted_rental_pipeline",
+                    "fitted_sales_pipeline",
                     "params:categorical_features",
                 ],
                 outputs="MLPredictor",
